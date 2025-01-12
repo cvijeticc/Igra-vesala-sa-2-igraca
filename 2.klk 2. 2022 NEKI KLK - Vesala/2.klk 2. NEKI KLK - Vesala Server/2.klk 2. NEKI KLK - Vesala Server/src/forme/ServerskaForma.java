@@ -6,6 +6,9 @@ package forme;
 
 import controller.Controller;
 import java.util.List;
+import javax.swing.JOptionPane;
+import operacije.Operacije;
+import server.ObradaKlijentskihZahteva;
 import server.PokreniServer;
 
 /**
@@ -13,8 +16,9 @@ import server.PokreniServer;
  * @author andri
  */
 public class ServerskaForma extends javax.swing.JFrame {
-
+    PokreniServer ps;
     private List<String> zadateReci;
+   
     /**
      * Creates new form ServerskaForma
      */
@@ -22,6 +26,9 @@ public class ServerskaForma extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         popuniCombo();
+        
+        ps = new PokreniServer();
+        ps.start();
         
         
     }
@@ -159,6 +166,11 @@ public class ServerskaForma extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSlovo5ActionPerformed
 
     private void btnPokreniIgruActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPokreniIgruActionPerformed
+        List<ObradaKlijentskihZahteva> klijenti = Controller.getInstance().getKlijenti();
+        
+        
+        if (klijenti.size() == 2) {
+            
         String odabranaRec = (String) cmbOdabranaRec.getSelectedItem();
         Controller.getInstance().setOdabranaRec(odabranaRec);
         txtSlovo1.setText(odabranaRec.charAt(0) + "");
@@ -167,8 +179,19 @@ public class ServerskaForma extends javax.swing.JFrame {
         txtSlovo4.setText(odabranaRec.charAt(3) + "");
         txtSlovo5.setText(odabranaRec.charAt(4) + "");
         
-        PokreniServer ps = new PokreniServer();
-        ps.start();
+            for (ObradaKlijentskihZahteva k : klijenti) {
+                k.obavestiKlijenta(Operacije.POCELA_IGRA, null);
+            }
+        
+        } else {
+             JOptionPane.showMessageDialog(this, "Cekaju se 2 klijenta");
+         }
+            
+      
+
+        
+//        PokreniServer ps = new PokreniServer();
+//        ps.start();
     }//GEN-LAST:event_btnPokreniIgruActionPerformed
 
     /**

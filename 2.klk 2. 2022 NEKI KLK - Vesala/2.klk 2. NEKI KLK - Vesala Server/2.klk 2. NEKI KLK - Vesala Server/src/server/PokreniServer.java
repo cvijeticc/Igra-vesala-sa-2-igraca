@@ -4,9 +4,12 @@
  */
 package server;
 
+import controller.Controller;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,8 +18,9 @@ import java.util.logging.Logger;
  * @author andri
  */
 public class PokreniServer extends Thread {
-    private ServerSocket serverskiSocket;
     private boolean kraj = false;
+    private ServerSocket serverskiSocket;
+   
     
     @Override
     public void run() {
@@ -29,7 +33,9 @@ public class PokreniServer extends Thread {
                 System.out.println("Klijent povezan");
                 
                 ObradaKlijentskihZahteva nit = new ObradaKlijentskihZahteva(s);
+                Controller.getInstance().getKlijenti().add(nit);
                 nit.start();
+                
             }
         } catch (IOException ex) {
             Logger.getLogger(ObradaKlijentskihZahteva.class.getName()).log(Level.SEVERE, null, ex);
@@ -47,4 +53,8 @@ public class PokreniServer extends Thread {
         }
         
     }
+
+    
+    
+    
 }

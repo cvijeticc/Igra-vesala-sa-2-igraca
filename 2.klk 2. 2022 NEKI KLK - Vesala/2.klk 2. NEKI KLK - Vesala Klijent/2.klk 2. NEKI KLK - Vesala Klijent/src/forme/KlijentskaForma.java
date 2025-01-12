@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
+import kontroler.Kontroler;
 import model.Slovo;
 import operacije.Operacije;
 import transfer.KlijentskiZahtev;
@@ -22,13 +23,28 @@ public class KlijentskaForma extends javax.swing.JFrame {
     private int brojPokusaja = 0;
     private int brojPogodjenih = 0;
     List<Character> pokusanaSlova = new ArrayList<>();
+    
+    private Slovo slovoPokusaj;
 
+    public Slovo getSlovoPokusaj() {
+        return slovoPokusaj;
+    }
+
+    public void setSlovoPokusaj(Slovo slovoPokusaj) {
+        this.slovoPokusaj = slovoPokusaj;
+    }
+    
+    
+    
     /**
      * Creates new form KlijentskaForma
      */
     public KlijentskaForma() {
         initComponents();
         setLocationRelativeTo(null);
+        btnPogadjaj.setEnabled(false);
+        kontroler.Kontroler.getInstace().setKf(this);
+        Komunikacija.getInstance().start();
     }
 
     /**
@@ -179,9 +195,9 @@ public class KlijentskaForma extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(lblBrojPokusaja))
                 .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(lblKoriscenaSlova, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblKoriscenaSlova, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
                 .addContainerGap(48, Short.MAX_VALUE))
         );
 
@@ -211,44 +227,11 @@ public class KlijentskaForma extends javax.swing.JFrame {
         KlijentskiZahtev kz = new KlijentskiZahtev(Operacije.POGADJAJ, s);
         Komunikacija.getInstance().posaljiZahtev(kz);
 
-        ServerskiOdgovor so = Komunikacija.getInstance().primiOdgovor();
-        s = (Slovo) so.getOdgovor();
+//        ServerskiOdgovor so = Komunikacija.getInstance().primiOdgovor();
+//        s = (Slovo) so.getOdgovor();
 
-        pokusanaSlova.add(slovo);
+//        pokusanaSlova.add(slovo);
         
-        if (s.getPozicija() == -1) {
-            JOptionPane.showMessageDialog(this, "Nije pogodjeno");
-        } else {
-            brojPogodjenih++;
-            JOptionPane.showMessageDialog(this, "Jeste pogodjeno");
-            if (s.getPozicija() == 1) {
-                txtSlovo1.setText(s.getSlovo() + "");
-            }
-            if (s.getPozicija() == 2) {
-                txtSlovo2.setText(s.getSlovo() + "");
-            }
-            if (s.getPozicija() == 3) {
-                txtSlovo3.setText(s.getSlovo() + "");
-            }
-            if (s.getPozicija() == 4) {
-                txtSlovo4.setText(s.getSlovo() + "");
-            }
-            if (s.getPozicija() == 5) {
-                txtSlovo5.setText(s.getSlovo() + "");
-            }
-            if (brojPogodjenih >= 5) {
-                JOptionPane.showMessageDialog(this, "Pobedili ste ");
-                btnPogadjaj.setEnabled(false);
-                return;
-            }
-        }
-        txtUnesiSlovo.setText("");
-        String textZaLabelu = "";
-        for (Character k : pokusanaSlova) {
-            textZaLabelu = textZaLabelu + k;//moglo je ovde + k + ", "; 
-            textZaLabelu = textZaLabelu + ", ";
-        }
-        lblKoriscenaSlova.setText(textZaLabelu);
         
         
     }//GEN-LAST:event_btnPogadjajActionPerformed
@@ -307,4 +290,55 @@ public class KlijentskaForma extends javax.swing.JFrame {
     private javax.swing.JTextField txtSlovo5;
     private javax.swing.JTextField txtUnesiSlovo;
     // End of variables declaration//GEN-END:variables
+
+    public void pocelaIgra() {
+        
+        btnPogadjaj.setEnabled(true);
+        brojPokusaja = 0;
+        brojPogodjenih = 0;
+        pokusanaSlova = new ArrayList<>();
+               
+    }
+
+    public void postaviSlovoPokusaj(Slovo slovo) {
+        pokusanaSlova.add(slovo.getSlovo());
+        slovoPokusaj = slovo;
+        if (slovoPokusaj.getPozicija() == -1) {
+            JOptionPane.showMessageDialog(this, "Nije pogodjeno");
+        } else {
+            brojPogodjenih++;
+            JOptionPane.showMessageDialog(this, "Jeste pogodjeno");
+            if (slovoPokusaj.getPozicija() == 1) {
+                txtSlovo1.setText(slovoPokusaj.getSlovo() + "");
+            }
+            if (slovoPokusaj.getPozicija() == 2) {
+                txtSlovo2.setText(slovoPokusaj.getSlovo() + "");
+            }
+            if (slovoPokusaj.getPozicija() == 3) {
+                txtSlovo3.setText(slovoPokusaj.getSlovo() + "");
+            }
+            if (slovoPokusaj.getPozicija() == 4) {
+                txtSlovo4.setText(slovoPokusaj.getSlovo() + "");
+            }
+            if (slovoPokusaj.getPozicija() == 5) {
+                txtSlovo5.setText(slovoPokusaj.getSlovo() + "");
+            }
+            if (brojPogodjenih >= 5) {
+                JOptionPane.showMessageDialog(this, "Pobedili ste ");
+                btnPogadjaj.setEnabled(false);
+                return;
+            }
+        }
+        txtUnesiSlovo.setText("");
+        String textZaLabelu = "";
+        for (Character k : pokusanaSlova) {
+            textZaLabelu = textZaLabelu + k;//moglo je ovde + k + ", "; 
+            textZaLabelu = textZaLabelu + ", ";
+        }
+        lblKoriscenaSlova.setText(textZaLabelu);
+        
+        
+    }
+
+    
 }

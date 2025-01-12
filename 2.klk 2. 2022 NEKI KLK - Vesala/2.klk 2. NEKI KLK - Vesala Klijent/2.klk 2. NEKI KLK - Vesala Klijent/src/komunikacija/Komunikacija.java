@@ -10,6 +10,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import kontroler.Kontroler;
+import model.Slovo;
+import operacije.Operacije;
 import transfer.KlijentskiZahtev;
 import transfer.ServerskiOdgovor;
 
@@ -17,7 +20,7 @@ import transfer.ServerskiOdgovor;
  *
  * @author andri
  */
-public class Komunikacija {
+public class Komunikacija extends Thread{
     private Socket s;
     private static Komunikacija instance;
 
@@ -35,6 +38,25 @@ public class Komunikacija {
         }
         return instance;
     }
+
+    @Override
+    public void run() {
+        while (true) {            
+            ServerskiOdgovor so = primiOdgovor();
+            switch (so.getOperacija()) {
+                case Operacije.POCELA_IGRA:
+                    Kontroler.getInstace().pocelaIgra();
+                    break;
+                case Operacije.POGADJAJ:
+                    Kontroler.getInstace().postaviSlovoPokusaj((Slovo)so.getOdgovor());
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+        }
+    }
+    
+    
     
     public ServerskiOdgovor primiOdgovor(){
         

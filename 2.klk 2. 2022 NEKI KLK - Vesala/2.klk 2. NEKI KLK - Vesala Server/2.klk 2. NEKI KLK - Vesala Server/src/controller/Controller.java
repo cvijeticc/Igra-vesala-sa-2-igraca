@@ -7,6 +7,8 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 import model.Slovo;
+import operacije.Operacije;
+import server.ObradaKlijentskihZahteva;
 
 /**
  *
@@ -17,6 +19,8 @@ public class Controller {//dbb ins ins dbb
    private List<String> zadateReci = new ArrayList<>();
    private String odabranaRec;
    private static Controller instance;
+   private List<ObradaKlijentskihZahteva> klijenti = new ArrayList<>();
+   
    
    private Controller(){
        zadateReci.add("PETAO");
@@ -50,16 +54,26 @@ public class Controller {//dbb ins ins dbb
         this.odabranaRec = odabranaRec;
     }
 
-    public Slovo pogadjanje(Slovo slovo) {
+    public void pogadjanje(Slovo slovo) {
         char karakter = slovo.getSlovo();
         for (int i = 0; i < odabranaRec.length(); i++) {
-            if (odabranaRec.charAt(i) == slovo.getSlovo()) {
+            if (odabranaRec.charAt(i) == karakter) {
                 slovo.setPozicija(i+1);
-                return slovo;
+                break;
             }
         }
-        slovo.setPozicija(-1);//ono nisam morao da radim ali da se osiguran
-        return slovo;
+        
+        for (ObradaKlijentskihZahteva k : klijenti) {
+            k.obavestiKlijenta(Operacije.POGADJAJ, slovo);
+        }
+    }
+
+    public List<ObradaKlijentskihZahteva> getKlijenti() {
+        return klijenti;
+    }
+
+    public void setKlijenti(List<ObradaKlijentskihZahteva> klijenti) {
+        this.klijenti = klijenti;
     }
 
     

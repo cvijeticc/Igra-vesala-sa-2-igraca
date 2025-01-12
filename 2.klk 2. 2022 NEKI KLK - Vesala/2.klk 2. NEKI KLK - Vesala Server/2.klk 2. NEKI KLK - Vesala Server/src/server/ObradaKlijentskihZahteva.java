@@ -34,17 +34,18 @@ public class ObradaKlijentskihZahteva extends Thread{
             ServerskiOdgovor so = new ServerskiOdgovor();
             switch (kz.getOperacija()) {
                 case Operacije.POGADJAJ:
-                    Slovo s = Controller.getInstance().pogadjanje((Slovo)kz.getParam());
+                    Controller.getInstance().pogadjanje((Slovo)kz.getParam());
                     //sam ovde dopisujes castovanje
-                    so.setOdgovor(s);//ovde je bila greska
+                   
+                    //so.setOdgovor(s);//ovde je bila greska
                     
                     break;
                 
                 default:
                     System.out.println("Greska");
             }
-            
-            posaljiOdgovor(so);
+//            so.setOperacija(kz.getOperacija());
+//            posaljiOdgovor(so);
         }
         
     }
@@ -73,6 +74,14 @@ public class ObradaKlijentskihZahteva extends Thread{
     
     
     
+    }
+
+    public void obavestiKlijenta(int operacija, Object odgovor) {
+        ServerskiOdgovor so = new ServerskiOdgovor();
+        so.setOperacija(operacija);
+        so.setOdgovor(odgovor);
+        
+        posaljiOdgovor(so);
     }
     
     

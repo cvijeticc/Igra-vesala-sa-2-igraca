@@ -12,13 +12,17 @@ import java.io.Serializable;
  */
 public class ServerskiOdgovor implements Serializable{
     private Object odgovor;
-
+    private int operacija;
+    
     public ServerskiOdgovor() {
     }
 
-    public ServerskiOdgovor(Object odgovor) {
+    public ServerskiOdgovor(Object odgovor, int operacija) {
         this.odgovor = odgovor;
+        this.operacija = operacija;
     }
+
+    
 
     public Object getOdgovor() {
         return odgovor;
@@ -27,6 +31,15 @@ public class ServerskiOdgovor implements Serializable{
     public void setOdgovor(Object odgovor) {
         this.odgovor = odgovor;
     }
+
+    public int getOperacija() {
+        return operacija;
+    }
+
+    public void setOperacija(int operacija) {
+        this.operacija = operacija;
+    }
+    
     
     
 }
