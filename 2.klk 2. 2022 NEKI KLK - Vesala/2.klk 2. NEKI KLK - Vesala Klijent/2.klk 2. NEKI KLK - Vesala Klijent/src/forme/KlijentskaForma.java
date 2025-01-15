@@ -23,7 +23,7 @@ public class KlijentskaForma extends javax.swing.JFrame {
     private int brojPokusaja = 0;
     private int brojPogodjenih = 0;
     List<Character> pokusanaSlova = new ArrayList<>();
-    
+
     private Slovo slovoPokusaj;
 
     public Slovo getSlovoPokusaj() {
@@ -33,9 +33,7 @@ public class KlijentskaForma extends javax.swing.JFrame {
     public void setSlovoPokusaj(Slovo slovoPokusaj) {
         this.slovoPokusaj = slovoPokusaj;
     }
-    
-    
-    
+
     /**
      * Creates new form KlijentskaForma
      */
@@ -45,7 +43,7 @@ public class KlijentskaForma extends javax.swing.JFrame {
         btnPogadjaj.setEnabled(false);
         kontroler.Kontroler.getInstace().setKf(this);
         Komunikacija.getInstance().start();
-       
+
     }
 
     /**
@@ -206,8 +204,15 @@ public class KlijentskaForma extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPogadjajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPogadjajActionPerformed
-        
-            
+        String slovoText = txtUnesiSlovo.getText();
+//        char slovo = slovoText.charAt(0);
+        char slovo = Character.toUpperCase(slovoText.charAt(0));
+        Slovo s = new Slovo(-1, slovo);
+        if (pokusanaSlova.contains(slovo)) {
+            JOptionPane.showMessageDialog(this, "To slovo je vec iskoriceno");
+            return;
+        }
+
         brojPokusaja++;
         lblBrojPokusaja.setText(10 - brojPokusaja + "");
         if (brojPokusaja > 10) {
@@ -215,26 +220,14 @@ public class KlijentskaForma extends javax.swing.JFrame {
             btnPogadjaj.setEnabled(false);
             return;
         }
-        String slovoText = txtUnesiSlovo.getText();
-//        char slovo = slovoText.charAt(0);
-        char slovo = Character.toUpperCase(slovoText.charAt(0));
-        Slovo s = new Slovo(-1, slovo);
-        
-        if (pokusanaSlova.contains(slovo)) {
-            JOptionPane.showMessageDialog(this, "To slovo je vec iskoriceno");
-            return;
-        }
-        
+
         KlijentskiZahtev kz = new KlijentskiZahtev(Operacije.POGADJAJ, s);
         Komunikacija.getInstance().posaljiZahtev(kz);
 
 //        ServerskiOdgovor so = Komunikacija.getInstance().primiOdgovor();
 //        s = (Slovo) so.getOdgovor();
-
 //        pokusanaSlova.add(slovo);
-        
-        
-        
+
     }//GEN-LAST:event_btnPogadjajActionPerformed
 
     /**
@@ -293,19 +286,19 @@ public class KlijentskaForma extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public void pocelaIgra() {
-        
+
         btnPogadjaj.setEnabled(true);
         brojPokusaja = 0;
         brojPogodjenih = 0;
         pokusanaSlova = new ArrayList<>();
-               
+
     }
 
     public void postaviSlovoPokusaj(Slovo slovo) {
         if (!pokusanaSlova.contains(slovo.getSlovo())) {
             pokusanaSlova.add(slovo.getSlovo());
         }
-        
+
         slovoPokusaj = slovo;
         if (slovoPokusaj.getPozicija() == -1) {
             //JOptionPane.showMessageDialog(this, "Nije pogodjeno");
@@ -340,8 +333,7 @@ public class KlijentskaForma extends javax.swing.JFrame {
             textZaLabelu = textZaLabelu + ", ";
         }
         lblKoriscenaSlova.setText(textZaLabelu);
-        
-        
+
     }
 
     public void krajIgre(String poruka) {
@@ -356,8 +348,5 @@ public class KlijentskaForma extends javax.swing.JFrame {
     public void jestePogodjeno() {
         JOptionPane.showMessageDialog(this, "Jeste pogodjeno");
     }
- 
-   
-    
-  
+
 }

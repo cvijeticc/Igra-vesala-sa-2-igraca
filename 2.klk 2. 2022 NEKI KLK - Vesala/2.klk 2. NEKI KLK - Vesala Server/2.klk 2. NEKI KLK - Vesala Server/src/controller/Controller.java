@@ -69,7 +69,6 @@ public class Controller {//dbb ins ins dbb
                 brojPogodaka++;
                 brojac++;
                 //slovo.setPozicija(i+1);
-                break;
             }
         }
         if (slova.isEmpty()) {

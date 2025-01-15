@@ -70,7 +70,7 @@ public class ObradaKlijentskihZahteva extends Thread{
 
     private void posaljiOdgovor(ServerskiOdgovor so){
         try { 
-            System.err.println("Serverski odgovor: " + so.getOdgovor());
+            
             ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
             oos.writeObject(so);
             oos.flush();
