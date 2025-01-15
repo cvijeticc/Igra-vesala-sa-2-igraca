@@ -24,6 +24,7 @@ public class ServerskaForma extends javax.swing.JFrame {
      */
     public ServerskaForma() {
         initComponents();
+        Controller.getInstance().setSf(this);
         setLocationRelativeTo(null);
         popuniCombo();
         
@@ -50,6 +51,14 @@ public class ServerskaForma extends javax.swing.JFrame {
         txtSlovo3 = new javax.swing.JTextField();
         txtSlovo4 = new javax.swing.JTextField();
         txtSlovo5 = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lblBrojPokusaja1 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        lblBrojPonudjenih1 = new javax.swing.JLabel();
+        lblBrojPokusaja2 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        lblBrojPonudjenih2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,6 +108,14 @@ public class ServerskaForma extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("Broj pokusaja/Broj ponudjenih");
+
+        jLabel3.setText("Broj pokusaja/Broj ponudjenih");
+
+        jLabel5.setText("/");
+
+        jLabel8.setText("/");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -121,7 +138,25 @@ public class ServerskaForma extends javax.swing.JFrame {
                         .addGap(35, 35, 35)
                         .addComponent(cmbOdabranaRec, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(79, 79, 79)
-                        .addComponent(btnPokreniIgru)))
+                        .addComponent(btnPokreniIgru))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblBrojPokusaja2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblBrojPonudjenih2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblBrojPokusaja1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblBrojPonudjenih1)))))
                 .addContainerGap(104, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -139,7 +174,19 @@ public class ServerskaForma extends javax.swing.JFrame {
                     .addComponent(txtSlovo3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSlovo4, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSlovo5, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(142, Short.MAX_VALUE))
+                .addGap(56, 56, 56)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(lblBrojPokusaja1)
+                    .addComponent(jLabel5)
+                    .addComponent(lblBrojPonudjenih1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(lblBrojPokusaja2)
+                    .addComponent(jLabel8)
+                    .addComponent(lblBrojPonudjenih2))
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -233,6 +280,14 @@ public class ServerskaForma extends javax.swing.JFrame {
     private javax.swing.JButton btnPokreniIgru;
     private javax.swing.JComboBox<String> cmbOdabranaRec;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel lblBrojPokusaja1;
+    private javax.swing.JLabel lblBrojPokusaja2;
+    private javax.swing.JLabel lblBrojPonudjenih1;
+    private javax.swing.JLabel lblBrojPonudjenih2;
     private javax.swing.JTextField txtSlovo1;
     private javax.swing.JTextField txtSlovo2;
     private javax.swing.JTextField txtSlovo3;
@@ -248,4 +303,17 @@ public class ServerskaForma extends javax.swing.JFrame {
         }
         
     }
+
+    public void prikaziPorukuKrajIgre(String poruka) {
+        JOptionPane.showMessageDialog(this, poruka);
+    }
+
+    public void osveziLabeleNaFormi() {
+        List<ObradaKlijentskihZahteva> klijenti = Controller.getInstance().getKlijenti();
+        lblBrojPonudjenih1.setText(klijenti.get(0).getBrojPogodjenih()+ "");
+        lblBrojPonudjenih2.setText(klijenti.get(1).getBrojPogodjenih()+ "");
+        lblBrojPokusaja1.setText(klijenti.get(0).getBrojPokusaja()+ "");
+        lblBrojPokusaja2.setText(klijenti.get(1).getBrojPokusaja()+ "");
+    }
+        
 }

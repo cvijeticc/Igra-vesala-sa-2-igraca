@@ -45,6 +45,7 @@ public class KlijentskaForma extends javax.swing.JFrame {
         btnPogadjaj.setEnabled(false);
         kontroler.Kontroler.getInstace().setKf(this);
         Komunikacija.getInstance().start();
+       
     }
 
     /**
@@ -301,13 +302,16 @@ public class KlijentskaForma extends javax.swing.JFrame {
     }
 
     public void postaviSlovoPokusaj(Slovo slovo) {
-        pokusanaSlova.add(slovo.getSlovo());
+        if (!pokusanaSlova.contains(slovo.getSlovo())) {
+            pokusanaSlova.add(slovo.getSlovo());
+        }
+        
         slovoPokusaj = slovo;
         if (slovoPokusaj.getPozicija() == -1) {
-            JOptionPane.showMessageDialog(this, "Nije pogodjeno");
+            //JOptionPane.showMessageDialog(this, "Nije pogodjeno");
         } else {
             brojPogodjenih++;
-            JOptionPane.showMessageDialog(this, "Jeste pogodjeno");
+            //JOptionPane.showMessageDialog(this, "Jeste pogodjeno");
             if (slovoPokusaj.getPozicija() == 1) {
                 txtSlovo1.setText(slovoPokusaj.getSlovo() + "");
             }
@@ -324,7 +328,7 @@ public class KlijentskaForma extends javax.swing.JFrame {
                 txtSlovo5.setText(slovoPokusaj.getSlovo() + "");
             }
             if (brojPogodjenih >= 5) {
-                JOptionPane.showMessageDialog(this, "Pobedili ste ");
+                //JOptionPane.showMessageDialog(this, "Pobedili ste ");
                 btnPogadjaj.setEnabled(false);
                 return;
             }
@@ -340,5 +344,20 @@ public class KlijentskaForma extends javax.swing.JFrame {
         
     }
 
+    public void krajIgre(String poruka) {
+        btnPogadjaj.setEnabled(false);
+        JOptionPane.showMessageDialog(this, poruka);
+    }
+
+    public void nijePogodjeno() {
+        JOptionPane.showMessageDialog(this, "Nije pogodjeno");
+    }
+
+    public void jestePogodjeno() {
+        JOptionPane.showMessageDialog(this, "Jeste pogodjeno");
+    }
+ 
+   
     
+  
 }

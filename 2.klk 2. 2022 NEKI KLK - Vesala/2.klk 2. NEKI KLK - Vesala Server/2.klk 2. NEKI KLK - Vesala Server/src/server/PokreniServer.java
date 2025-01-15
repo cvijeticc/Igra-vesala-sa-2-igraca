@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class PokreniServer extends Thread {
     private boolean kraj = false;
     private ServerSocket serverskiSocket;
-   
+    private static int broj = 0;
     
     @Override
     public void run() {
@@ -30,9 +30,10 @@ public class PokreniServer extends Thread {
             System.out.println("Socket otvoren");
             while (!kraj) {                
                 Socket s = serverskiSocket.accept();
-                System.out.println("Klijent povezan");
+                broj++;
+                System.out.println("Povezan je klijent broj " + broj);
                 
-                ObradaKlijentskihZahteva nit = new ObradaKlijentskihZahteva(s);
+                ObradaKlijentskihZahteva nit = new ObradaKlijentskihZahteva(s, broj);
                 Controller.getInstance().getKlijenti().add(nit);
                 nit.start();
                 

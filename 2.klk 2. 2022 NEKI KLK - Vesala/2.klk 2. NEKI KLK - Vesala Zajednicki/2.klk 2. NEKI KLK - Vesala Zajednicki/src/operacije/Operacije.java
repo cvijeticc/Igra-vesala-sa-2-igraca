@@ -11,5 +11,6 @@ package operacije;
 public class Operacije {
     public static final int POGADJAJ = 1;
     public static final int POCELA_IGRA = 2;
+    public static final int KRAJ_IGRE = 3;
     
 }

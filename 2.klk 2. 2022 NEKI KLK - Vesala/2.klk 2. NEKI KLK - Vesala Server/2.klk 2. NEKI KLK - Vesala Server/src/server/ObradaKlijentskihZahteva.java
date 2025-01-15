@@ -8,7 +8,6 @@ import controller.Controller;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,8 +22,13 @@ import transfer.ServerskiOdgovor;
  */
 public class ObradaKlijentskihZahteva extends Thread{
     private Socket s;
-    public ObradaKlijentskihZahteva(Socket s) {
+    private int brojIgraca; // prvi ili drugi
+    private int brojPokusaja = 0;
+    private int brojPogodjenih = 0;
+    
+    public ObradaKlijentskihZahteva(Socket s, int brojIgraca) {
         this.s = s;
+        this.brojIgraca = brojIgraca;
     }
 
     @Override
@@ -34,10 +38,12 @@ public class ObradaKlijentskihZahteva extends Thread{
             ServerskiOdgovor so = new ServerskiOdgovor();
             switch (kz.getOperacija()) {
                 case Operacije.POGADJAJ:
-                    Controller.getInstance().pogadjanje((Slovo)kz.getParam());
-                    //sam ovde dopisujes castovanje
-                   
-                    //so.setOdgovor(s);//ovde je bila greska
+                    int brojSlova = Controller.getInstance().brojPogodjenih((Slovo)kz.getParam())   ;
+                    brojPogodjenih += brojSlova;
+                    brojPokusaja++;
+                    Controller.getInstance().proveraKrajaIgre();
+                    
+                    Controller.getInstance().osveziLabeleNaFormi();
                     
                     break;
                 
@@ -64,6 +70,7 @@ public class ObradaKlijentskihZahteva extends Thread{
 
     private void posaljiOdgovor(ServerskiOdgovor so){
         try { 
+            System.err.println("Serverski odgovor: " + so.getOdgovor());
             ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
             oos.writeObject(so);
             oos.flush();
@@ -83,6 +90,32 @@ public class ObradaKlijentskihZahteva extends Thread{
         
         posaljiOdgovor(so);
     }
+
+    public int getBrojIgraca() {
+        return brojIgraca;
+    }
+
+    public void setBrojIgraca(int brojIgraca) {
+        this.brojIgraca = brojIgraca;
+    }
+
+    public int getBrojPokusaja() {
+        return brojPokusaja;
+    }
+
+    public void setBrojPokusaja(int brojPokusaja) {
+        this.brojPokusaja = brojPokusaja;
+    }
+
+    public int getBrojPogodjenih() {
+        return brojPogodjenih;
+    }
+
+    public void setBrojPogodjenih(int brojPogodjenih) {
+        this.brojPogodjenih = brojPogodjenih;
+    }
+
+    
     
     
     

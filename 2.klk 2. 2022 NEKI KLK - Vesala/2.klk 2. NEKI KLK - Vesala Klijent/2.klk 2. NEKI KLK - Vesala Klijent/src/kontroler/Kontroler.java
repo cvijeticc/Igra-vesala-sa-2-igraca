@@ -5,6 +5,7 @@
 package kontroler;
 
 import forme.KlijentskaForma;
+import java.util.List;
 import model.Slovo;
 
 /**
@@ -40,9 +41,22 @@ public class Kontroler {
         
     }
 
-    public void postaviSlovoPokusaj(Slovo slovo) {
-        kf.postaviSlovoPokusaj(slovo);
+    public void postaviSlovoPokusaj(List<Slovo> slova) {
+        if (slova.get(0).getPozicija() == -1) {
+            kf.nijePogodjeno();
+        }else{
+            kf.jestePogodjeno();
+        
+        }
+        
+        for (Slovo s : slova) {
+        kf.postaviSlovoPokusaj(s);
+        }
             
+    }
+
+    public void krajIgre(String poruka) {
+        kf.krajIgre(poruka);
     }
 
     

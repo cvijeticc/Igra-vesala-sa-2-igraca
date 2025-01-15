@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import kontroler.Kontroler;
@@ -46,9 +47,17 @@ public class Komunikacija extends Thread{
             switch (so.getOperacija()) {
                 case Operacije.POCELA_IGRA:
                     Kontroler.getInstace().pocelaIgra();
+                    
                     break;
                 case Operacije.POGADJAJ:
-                    Kontroler.getInstace().postaviSlovoPokusaj((Slovo)so.getOdgovor());
+                    List<Slovo> slova = (List<Slovo>) so.getOdgovor();
+                    //slova.stream().forEach(slovo -> System.err.println(slovo));
+                    Kontroler.getInstace().postaviSlovoPokusaj(slova);
+                    break;
+                case Operacije.KRAJ_IGRE:
+                    String poruka = (String) so.getOdgovor();
+                    
+                    Kontroler.getInstace().krajIgre(poruka);
                     break;
                 default:
                     throw new AssertionError();
@@ -74,6 +83,8 @@ public class Komunikacija extends Thread{
     }
     
     public void posaljiZahtev(KlijentskiZahtev kz){
+       
+        
         ObjectOutputStream oos; //to je izvuceno ispred na snimku
         try {
             oos = new ObjectOutputStream(s.getOutputStream());
